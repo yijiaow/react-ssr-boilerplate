@@ -1,13 +1,16 @@
 import React from 'react';
 import ReactDOMServer from 'react-dom/server';
 import { StaticRouter } from 'react-router-dom/server';
+import { Provider } from 'react-redux';
 import Routes from '../client/Routes';
 
-export const requestHandler = (req, res) => {
+const handleRender = (req, res, store) => {
   const content = ReactDOMServer.renderToString(
-    <StaticRouter location={req.path}>
-      <Routes />
-    </StaticRouter>
+    <Provider store={store}>
+      <StaticRouter location={req.path}>
+        <Routes />
+      </StaticRouter>
+    </Provider>
   );
 
   const html = `
@@ -19,5 +22,8 @@ export const requestHandler = (req, res) => {
     </body>
   </html>
 `;
+
   res.send(html);
 };
+
+export default handleRender;
