@@ -1,10 +1,10 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 
-export const fetchUsers = createAsyncThunk(
-  'users/fetchUsers',
+export const fetchCurrentUser = createAsyncThunk(
+  'auth/fetchCurrentUser',
   async (_arg, { extra: api }) => {
     try {
-      let response = await api.get('/users');
+      let response = await api.get('/current_user');
       return response.data;
     } catch (err) {
       console.error(err);

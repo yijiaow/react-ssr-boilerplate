@@ -13,7 +13,7 @@ const handleRender = async (req, res, store) => {
   );
 
   try {
-    const data = await Promise.all(promises);
+    await Promise.all(promises);
 
     const content = ReactDOMServer.renderToString(
       <Provider store={store}>

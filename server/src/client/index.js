@@ -1,17 +1,21 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import { BrowserRouter } from 'react-router-dom';
+import { BrowserRouter, useRoutes } from 'react-router-dom';
 import { Provider } from 'react-redux';
 import createStore from '../helpers/createStore';
-import App from './App';
+import createAxiosInstance from '../helpers/createAxiosInstance';
+import routes, { renderRoutes } from './routes';
 
-const store = createStore(window.__INITIAL_STATE__);
+const axiosInstance = createAxiosInstance();
+const store = createStore(window.__INITIAL_STATE__, axiosInstance);
+
+const Routes = () => useRoutes(routes);
 
 ReactDOM.hydrateRoot(
   document.querySelector('#root'),
   <Provider store={store}>
     <BrowserRouter>
-      <App />
+      <Routes />
     </BrowserRouter>
   </Provider>
 );
