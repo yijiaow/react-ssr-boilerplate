@@ -1,11 +1,17 @@
 import React from 'react';
-import { Routes, Route } from 'react-router-dom';
-import Home from './components/Home';
-import Users from './components/Users';
+import Home from './pages/HomePage';
+import Users, { loadData } from './pages/UsersPage';
 
-export default () => (
-  <Routes>
-    <Route path="/" element={<Home />} />
-    <Route path="/users" element={<Users />} />
-  </Routes>
-);
+const routes = [
+  {
+    path: '/',
+    element: <Home />,
+  },
+  {
+    path: '/users',
+    element: <Users />,
+    loadData,
+  },
+];
+
+export default routes;

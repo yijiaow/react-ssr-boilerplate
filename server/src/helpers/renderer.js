@@ -1,29 +1,44 @@
 import React from 'react';
 import ReactDOMServer from 'react-dom/server';
 import { StaticRouter } from 'react-router-dom/server';
+import { matchRoutes, renderMatches } from 'react-router-dom';
 import { Provider } from 'react-redux';
-import Routes from '../client/Routes';
+import routes from '../client/routes';
 
-const handleRender = (req, res, store) => {
-  const content = ReactDOMServer.renderToString(
-    <Provider store={store}>
-      <StaticRouter location={req.path}>
-        <Routes />
-      </StaticRouter>
-    </Provider>
+const handleRender = async (req, res, store) => {
+  const matches = matchRoutes(routes, req.path) || [];
+  const promises = matches.map(({ route }) =>
+    route.loadData ? route.loadData(store) : null
   );
 
-  const html = `
+  try {
+    const data = await Promise.all(promises);
+
+    const content = ReactDOMServer.renderToString(
+      <Provider store={store}>
+        <StaticRouter location={req.path} context={{}}>
+          {renderMatches(matches)}
+        </StaticRouter>
+      </Provider>
+    );
+
+    const html = `
   <html>
     <head></head>
     <body>
       <div id="root">${content}</div>
+      <script>
+        window.__INITIAL_STATE__ = ${JSON.stringify(store.getState())}</script>
       <script src="bundle.js"></script>
     </body>
   </html>
 `;
 
-  res.send(html);
+    res.send(html);
+  } catch (err) {
+    console.error(err);
+    res.status(500).send('Error on server');
+  }
 };
 
 export default handleRender;

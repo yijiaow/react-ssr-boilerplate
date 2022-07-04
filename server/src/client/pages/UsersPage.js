@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchUsers } from '../../features/users/usersThunk';
+import UsersList from '../components/UsersList';
 
 const Users = () => {
   const dispatch = useDispatch();
@@ -14,14 +15,12 @@ const Users = () => {
 
   return (
     <div>
-      <h1>Users Component</h1>
-      <ul>
-        {entities.map((user) => (
-          <li key={user.id}>{user.name}</li>
-        ))}
-      </ul>
+      <h1>Users Page</h1>
+      <UsersList users={entities} />
     </div>
   );
 };
+
+export const loadData = (store) => store.dispatch(fetchUsers());
 
 export default Users;
