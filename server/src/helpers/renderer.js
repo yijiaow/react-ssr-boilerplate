@@ -3,6 +3,7 @@ import ReactDOMServer from 'react-dom/server';
 import { StaticRouter } from 'react-router-dom/server';
 import { matchRoutes, renderMatches } from 'react-router-dom';
 import { Provider } from 'react-redux';
+import serialize from 'serialize-javascript';
 import routes from '../client/routes';
 
 const handleRender = async (req, res, store) => {
@@ -28,7 +29,7 @@ const handleRender = async (req, res, store) => {
     <body>
       <div id="root">${content}</div>
       <script>
-        window.__INITIAL_STATE__ = ${JSON.stringify(store.getState())}</script>
+        window.__INITIAL_STATE__ = ${serialize(store.getState())}</script>
       <script src="bundle.js"></script>
     </body>
   </html>
