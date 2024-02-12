@@ -6,7 +6,7 @@
   "author": "Yijiao Wang <ttwyj250@gmail.com>",
   "license": "MIT",
   "dependencies": {
-    "@reduxjs/toolkit": "^1.8.3",
+    "@reduxjs/toolkit": "^2.1.0",
     "axios": "^0.27.2",
     "dotenv-webpack": "^7.1.1",
     "express": "^4.18.2",
